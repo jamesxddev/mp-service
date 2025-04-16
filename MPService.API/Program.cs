@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using MPService.Application.Users;
+using MPService.Domain.Users;
 using MPService.Infrastructure.Persistence;
+using MPService.Infrastructure.Persistence.Users;
 using Scalar.AspNetCore;
 using System;
 
@@ -14,6 +17,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddApplicationDbContext();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserAppService, UserAppService>();
+
 
 var app = builder.Build();
 

@@ -21,6 +21,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MPService.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPService.Infrastructure", "MPService.Infrastructure\MPService.Infrastructure.csproj", "{9A3B665C-C5EA-47DA-801C-459047FFDE85}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MPService.Application", "MPService.Application", "{55D64786-549B-40BC-9035-CE212983076E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPService.Application", "MPService.Application\MPService.Application.csproj", "{4F9A3C2D-E9B1-4855-85FE-7D44EC88C7F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,10 @@ Global
 		{9A3B665C-C5EA-47DA-801C-459047FFDE85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A3B665C-C5EA-47DA-801C-459047FFDE85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A3B665C-C5EA-47DA-801C-459047FFDE85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F9A3C2D-E9B1-4855-85FE-7D44EC88C7F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F9A3C2D-E9B1-4855-85FE-7D44EC88C7F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F9A3C2D-E9B1-4855-85FE-7D44EC88C7F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F9A3C2D-E9B1-4855-85FE-7D44EC88C7F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +64,8 @@ Global
 		{1ACD83A4-1B09-4553-8945-9E91D51E1D90} = {80CC707E-99F3-4E55-BF87-D3E7A9A4397F}
 		{99F0B7F5-2437-4BA5-B299-0D4E0940945D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{9A3B665C-C5EA-47DA-801C-459047FFDE85} = {99F0B7F5-2437-4BA5-B299-0D4E0940945D}
+		{55D64786-549B-40BC-9035-CE212983076E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4F9A3C2D-E9B1-4855-85FE-7D44EC88C7F1} = {55D64786-549B-40BC-9035-CE212983076E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A57532CD-11F0-4DC7-B9DF-055126393092}

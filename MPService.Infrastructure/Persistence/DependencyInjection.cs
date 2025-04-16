@@ -10,6 +10,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
 
+            if (configuration == null)
+            {
+                throw new InvalidOperationException("IConfiguration service is not registered.");
+            }
+
             services.AddDbContext<AppDbContext>(options =>
             {
                 var conn = configuration.GetConnectionString("DefaultConnection");

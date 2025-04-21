@@ -1,20 +1,20 @@
-﻿using MPService.Application.Users.DTOs;
+﻿using MPService.Application.Auth;
+using MPService.Application.Auth.DTOs;
+using MPService.Application.Users.DTOs;
 using MPService.Common;
 using MPService.Domain.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MPService.Application.Users
 {
     public class UserAppService : IUserAppService
     {
         private readonly IUserRepository _userRepository;
-        public UserAppService(IUserRepository userRepository)
+        private readonly IJwtService _jwtService;
+
+        public UserAppService(IUserRepository userRepository, IJwtService jwtService)
         {
             _userRepository = userRepository;
+            _jwtService = jwtService;
         }
 
         public async Task<Result<UserDto>> RegisterAsync(RegisterRequest request)
@@ -49,6 +49,17 @@ namespace MPService.Application.Users
             };
 
             return Result<UserDto>.Success(userDto);
+        }
+
+        public async Task<AuthResultDto> LoginAsync(LoginRequest request)
+        {
+            var user = await _userRepository.GetByUsernameAsync(request.Username);
+
+            if (user == null || !user.VerifyPassword(request.Password))
+                throw new UnauthorizedAccessException("Invalid credentials");
+
+            var token = _jwtService.GenerateToken(user);
+            return new AuthResultDto { Email = user.Email, Token = token };
         }
     }
 }

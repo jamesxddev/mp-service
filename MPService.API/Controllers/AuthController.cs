@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MPService.Application.Auth.DTOs;
 using MPService.Application.Users;
-using MPService.Application.Users.DTOs;
 
 namespace MPService.API.Controllers
 {
@@ -25,6 +25,21 @@ namespace MPService.API.Controllers
             }
 
             return Ok(result.Value);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        {
+            try
+            {
+                var result = await _userAppService.LoginAsync(request);
+                return Ok(result);
+
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
         }
     }
 }

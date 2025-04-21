@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MPService.Application\MPService.Application.csproj" />
     <ProjectReference Include="..\MPService.Domain\MPService.Domain.csproj" />
   </ItemGroup>
 

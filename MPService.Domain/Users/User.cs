@@ -37,5 +37,11 @@ namespace MPService.Domain.Users
 
         public bool IsVerified { get; set; }
 
+        public bool VerifyPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
+        }
+
     }
+
 }

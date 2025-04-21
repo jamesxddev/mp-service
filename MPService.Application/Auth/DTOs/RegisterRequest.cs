@@ -1,4 +1,4 @@
-﻿namespace MPService.Application.Users.DTOs
+﻿namespace MPService.Application.Auth.DTOs
 {
     public class RegisterRequest
     {

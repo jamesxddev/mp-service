@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MPService.Application.Auth;
 using MPService.Application.Users;
 using MPService.Domain.Users;
 using MPService.Infrastructure.Persistence;
@@ -20,6 +21,7 @@ builder.Services.AddApplicationDbContext();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserAppService, UserAppService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 
 var app = builder.Build();

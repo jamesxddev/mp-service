@@ -25,5 +25,12 @@ namespace MPService.Infrastructure.Persistence.Users
             var result = await _dbContext.SaveChangesAsync();
             return result > 0;
         }
+
+        public async Task<User?> GetByUsernameAsync(string username)
+        {
+            return await _dbContext.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Username == username);
+        }
     }
 }

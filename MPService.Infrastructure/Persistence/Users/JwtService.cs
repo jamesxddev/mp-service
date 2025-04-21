@@ -22,7 +22,17 @@ namespace MPService.Infrastructure.Persistence.Users
             var secretKey = jwtSettings["Key"];
             var issuer = jwtSettings["Issuer"];
             var audience = jwtSettings["Audience"];
-            var expiryMinutes = int.Parse(jwtSettings["ExpiryMinutes"]);
+            var expiryMinutesString = jwtSettings["ExpiryMinutes"];
+
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                throw new InvalidOperationException("Jwt:Key must not be null or empty.");
+            }
+
+            if (!int.TryParse(expiryMinutesString, out var expiryMinutes))
+            {
+                throw new InvalidOperationException("Jwt:ExpiryMinutes must be a valid integer.");
+            }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

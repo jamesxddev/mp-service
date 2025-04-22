@@ -59,7 +59,7 @@ namespace MPService.Application.Users
                 throw new UnauthorizedAccessException("Invalid credentials");
 
             var token = _jwtService.GenerateToken(user);
-            return new AuthResultDto { Email = user.Email, Token = token };
+            return new AuthResultDto { Token = token, Email = user.Email, Username = user.Username };
         }
     }
 }

@@ -6,6 +6,7 @@ using MPService.Infrastructure.Persistence;
 using MPService.Infrastructure.Persistence.Users;
 using Scalar.AspNetCore;
 using System;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins(
                 "http://localhost:8081",
-                "http://192.168.100.27:5000")
+                "http://192.168.100.27:5000",
+                "http://192.168.100.27:8082")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
@@ -37,7 +39,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
-builder.WebHost.UseUrls("http://0.0.0.0:5000");
+builder.WebHost.UseUrls(
+    "http://0.0.0.0:5000",
+    "http://0.0.0.0:8082");
 
 
 var app = builder.Build();
@@ -54,11 +58,24 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.MapGet("/info", () =>
+{
+    var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
+    return $"MP Service App Version: {version}";
+
+});
+
 app.UseHttpsRedirection();
 app.UseCors("AllowLocalhost");
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.EnsureCreated(); // creates DB if it doesn't exist
+}
 
 app.Run();

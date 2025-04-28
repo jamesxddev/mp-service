@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace MPService.Infrastructure.Persistence.Migrations
+namespace MPService.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250414113952_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250428072948_UpdateShift")]
+    partial class UpdateShift
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,34 @@ namespace MPService.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MPService.Domain.Shifts.Shift", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("PaidDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Shift");
+                });
 
             modelBuilder.Entity("MPService.Domain.Users.User", b =>
                 {
@@ -88,7 +116,26 @@ namespace MPService.Infrastructure.Persistence.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MPService.Domain.Shifts.Shift", b =>
+                {
+                    b.HasOne("MPService.Domain.Users.User", "User")
+                        .WithMany("Shift")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MPService.Domain.Users.User", b =>
+                {
+                    b.Navigation("Shift");
                 });
 #pragma warning restore 612, 618
         }

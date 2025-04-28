@@ -1,4 +1,5 @@
 ﻿using MPService.Common.Entities;
+using MPService.Domain.Shifts;
 using System.ComponentModel.DataAnnotations;
 
 namespace MPService.Domain.Users
@@ -42,6 +43,8 @@ namespace MPService.Domain.Users
             return BCrypt.Net.BCrypt.Verify(password, PasswordHash);
         }
 
+
+        public ICollection<Shift> Shift { get; set; } = [];
     }
 
 }

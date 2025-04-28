@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using MPService.Application.Auth;
+using MPService.Application.Shifts;
 using MPService.Application.Users;
+using MPService.Domain.Shifts;
 using MPService.Domain.Users;
 using MPService.Infrastructure.Persistence;
+using MPService.Infrastructure.Persistence.Shifts;
 using MPService.Infrastructure.Persistence.Users;
 using Scalar.AspNetCore;
 using System;
@@ -38,6 +41,8 @@ builder.Services.AddApplicationDbContext();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
+builder.Services.AddScoped<IShiftAppService, ShiftAppService>();
 
 builder.WebHost.UseUrls(
     "http://0.0.0.0:5000",

@@ -59,12 +59,10 @@ Update appsettings.json with your connection string.
 
 Migrations will automatically apply when the application starts.
 
-Run the Application
-bash
-Copy
-Edit
+3. Run the App
+```bash
 dotnet run
-
+```
 
 Scalar UI will be available at https://localhost:44305/scalar/v1
 

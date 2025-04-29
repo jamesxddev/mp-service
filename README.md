@@ -1,7 +1,8 @@
 # Welcome MPService 👋 
 MPService is a .NET Core microservice designed for managing Malayan Prints System for employee authentication, shift logs, and payroll computation. Built with a Domain-Driven Design (DDD) architecture, it separates concerns and models core business logic explicitly, making the system scalable, maintainable, and aligned with real-world business processes.
 
-🧭 Domain-Driven Design (DDD)
+## 🧭 Domain-Driven Design (DDD)
+
 MPService is structured around DDD building blocks to reflect core business domains:
 
 Domain Layer – Contains rich domain models, aggregates, value objects, and business rules.
@@ -15,7 +16,7 @@ Presentation/API Layer – Exposes HTTP endpoints for client communication.
 This structure helps keep business logic isolated from infrastructure concerns, resulting in a more maintainable codebase.
 
 
-🚀 Features
+## 🚀 Features
 🔐 Authentication – Secure login system using JWT
 
 🕒 Shift Logs – Accurate tracking of employee working days.
@@ -26,7 +27,8 @@ This structure helps keep business logic isolated from infrastructure concerns, 
 
 🛡️ Role-Based Access Control (RBAC) – Fine-grained authorization using roles.
 
-🛠️ Tech Stack
+## 🛠️ Tech Stack
+
 Language: C# (.NET Core 9)
 
 Architecture: Domain-Driven Design (DDD)
@@ -39,9 +41,8 @@ Database: MS SQL Server
 
 API Docs: Scalar (OpenAPI)
 
-## Get a fresh project
+## 📦 Getting Started
 
-📦 Getting Started
 1. Clone the Repo
    ```bash
    git clone https://github.com/jamesxddev/MPService.git
@@ -52,16 +53,18 @@ API Docs: Scalar (OpenAPI)
 Update appsettings.json with your connection string.
    ```json
    "ConnectionStrings": {
-    "DefaultConnection": "Server=...;Database=MPServiceDb;..."
+    "DefaultConnection": "Server=...;Database=MpDb-dev;..."
     }
    ```
 
 Migrations will automatically apply when the application starts.
 
-3. Run the App
-```bash
+Run the Application
+bash
+Copy
+Edit
 dotnet run
-```
+
 
 Scalar UI will be available at https://localhost:44305/scalar/v1
 

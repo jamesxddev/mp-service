@@ -39,6 +39,7 @@ namespace MPService.Infrastructure.Persistence.Shifts
             var shifts = await _dbContext.Shift
                 .AsNoTracking()
                 .Where(x => x.User != null && x.User.Username == username)
+                .OrderByDescending(x => x.TimeIn)
                 .ToListAsync();
 
             return shifts;

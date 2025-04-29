@@ -62,6 +62,42 @@ namespace MPService.Application.Shifts
             return shiftDtos;
         }
 
+        public async Task<ShiftAttendanceDto> GetShiftAttendanceByUsernameAsync(string username)
+        {
+            var shiftAttendanceDto = new ShiftAttendanceDto
+            {
+                PresentToday = false,
+                Shifts = []
+            };
+
+            var shiftDtos = new List<ShiftDto>();
+
+            var shifts = await _shiftRepository.GetShiftByUsernameAsync(username);
+            shiftDtos.AddRange(shifts.Select(s => new ShiftDto
+            {
+                ShiftId = s.Id.ToString(),
+                TimeIn = s.TimeIn,
+                TimeOut = s.TimeOut,
+            }));
+
+            var shiftToday = shiftDtos.FirstOrDefault(s => s.TimeIn.Date == DateTime.Now.Date);
+
+            if (shiftToday != null)
+            {
+                shiftAttendanceDto.ShiftId = shiftToday.ShiftId;
+                var presentToday = shiftToday.TimeIn != default;
+                var shiftEnded = shiftToday.TimeOut != default;
+
+                shiftAttendanceDto.PresentToday = presentToday;
+                shiftAttendanceDto.ShiftEnded = shiftEnded;
+
+            }
+
+            shiftAttendanceDto.Shifts = shiftDtos;
+
+            return shiftAttendanceDto;
+        }
+
         public async Task<Result<ShiftDto>> UpdateShiftAsync(Guid id, ShiftRequest shiftRequest)
         {
             var shift = await _shiftRepository.GetShiftByIdAsync(id);

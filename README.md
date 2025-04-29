@@ -1,4 +1,4 @@
-# Welcome MPService 👋 
+# Welcome to MPService 👋 
 MPService is a .NET Core microservice designed for managing Malayan Prints System for employee authentication, shift logs, and payroll computation. Built with a Domain-Driven Design (DDD) architecture, it separates concerns and models core business logic explicitly, making the system scalable, maintainable, and aligned with real-world business processes.
 
 ## 🧭 Domain-Driven Design (DDD)

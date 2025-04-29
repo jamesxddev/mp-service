@@ -39,7 +39,7 @@ namespace MPService.API.Controllers
                 return BadRequest(new { message = "Username is required." });
             }
 
-            var result = await _shiftAppService.GetShiftsByUsernameAsync(username);
+            var result = await _shiftAppService.GetShiftAttendanceByUsernameAsync(username);
 
             return Ok(result);
         }

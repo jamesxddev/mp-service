@@ -77,7 +77,7 @@ namespace MPService.Application.Shifts
             {
                 ShiftId = s.Id.ToString(),
                 TimeIn = s.TimeIn,
-                TimeOut = s.TimeOut,
+                TimeOut = s.TimeOut != default ? s.TimeOut : null,
             }));
 
             var shiftToday = shiftDtos.FirstOrDefault(s => s.TimeIn.Date == DateTime.Now.Date);

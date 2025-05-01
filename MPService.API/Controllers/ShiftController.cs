@@ -32,14 +32,14 @@ namespace MPService.API.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<IActionResult> GetShift(string username)
+        public async Task<IActionResult> GetShifts(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
                 return BadRequest(new { message = "Username is required." });
             }
 
-            var result = await _shiftAppService.GetShiftAttendanceByUsernameAsync(username);
+            var result = await _shiftAppService.GetShiftsNotPaidAsync(username);
 
             return Ok(result);
         }

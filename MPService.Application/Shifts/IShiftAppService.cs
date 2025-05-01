@@ -8,6 +8,6 @@ namespace MPService.Application.Shifts
         Task<Result<ShiftDto>> AddShiftAsync(ShiftRequest shiftRequest);
         Task<IEnumerable<ShiftDto>> GetShiftsByUsernameAsync(string username);
         Task<Result<ShiftDto>> UpdateShiftAsync(Guid id, ShiftRequest shiftRequest);
-        Task<ShiftAttendanceDto> GetShiftAttendanceByUsernameAsync(string username);
+        Task<ShiftAttendanceDto> GetShiftsNotPaidAsync(string username);
     }
 }

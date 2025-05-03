@@ -30,7 +30,10 @@ namespace MPService.Application.Users
             {
                 Username = request.Username,
                 Email = request.Email,
-                PasswordHash = passwordHash
+                PasswordHash = passwordHash,
+                FirstName = request.FirstName,
+                MiddleName = request.MiddleName,
+                LastName = request.LastName
             };
 
             var result = await _userRepository.AddAsync(user);
@@ -59,7 +62,28 @@ namespace MPService.Application.Users
                 throw new UnauthorizedAccessException("Invalid credentials");
 
             var token = _jwtService.GenerateToken(user);
-            return new AuthResultDto { Token = token, Email = user.Email, Username = user.Username };
+            return new AuthResultDto { Token = token, Email = user.Email, Username = user.Username ,FullName = $"{user.FirstName} {user.LastName}"};
+        }
+
+        public async Task<Result<string>> UpdatePasswordAsync(string username, UpdatePasswordRequest request)
+        {
+            var existingUser = await _userRepository.GetByUsernameAsync(username);
+            if (existingUser == null)
+            {
+                return Result<string>.Failure("User not exists.");
+            }
+
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+            existingUser.PasswordHash = passwordHash;
+
+            var result = await _userRepository.UpdatePasswordAsync(existingUser);
+            if (!result)
+            {
+                return Result<string>.Failure("Password update failed.");
+            }
+
+            return Result<string>.Success("Success");
+
         }
     }
 }

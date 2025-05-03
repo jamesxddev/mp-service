@@ -17,6 +17,11 @@ namespace MPService.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
+            if (request == null)
+            {
+                return BadRequest(new { message = "Registration request cannot be null." });
+            }
+
             var result = await _userAppService.RegisterAsync(request);
 
             if (!result.IsSuccess)
@@ -40,6 +45,21 @@ namespace MPService.API.Controllers
             {
                 return Unauthorized();
             }
+        }
+
+        [HttpPut("password/{username}")]
+        public async Task<IActionResult> UpdatePassword(string username, [FromBody] UpdatePasswordRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest(new { message = "Update password request cannot be null." });
+            }
+            var result = await _userAppService.UpdatePasswordAsync(username, request);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.ErrorMessage });
+            }
+            return Ok(result);
         }
     }
 }

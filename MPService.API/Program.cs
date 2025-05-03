@@ -46,6 +46,7 @@ builder.Services.AddScoped<IShiftAppService, ShiftAppService>();
 
 builder.WebHost.UseUrls(
     "http://0.0.0.0:5000",
+    "http://0.0.0.0:8081",
     "http://0.0.0.0:8082");
 
 

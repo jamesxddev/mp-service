@@ -5,5 +5,6 @@
         Task<User?> GetByEmailAsync(string email);
         Task<User?> GetByUsernameAsync(string username);
         Task<bool> AddAsync(User user);
+        Task<bool> UpdatePasswordAsync(User user);
     }
 }

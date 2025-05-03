@@ -22,8 +22,7 @@ namespace MPService.Infrastructure.Persistence.Users
         public async Task<bool> AddAsync(User user)
         {
             _dbContext.Users.Add(user);
-            var result = await _dbContext.SaveChangesAsync();
-            return result > 0;
+            return await SaveChangesAsync();
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
@@ -31,6 +30,17 @@ namespace MPService.Infrastructure.Persistence.Users
             return await _dbContext.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Username == username);
+        }
+
+        public async Task<bool> UpdatePasswordAsync(User user)
+        {
+            _dbContext.Users.Update(user);
+            return await SaveChangesAsync();
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await _dbContext.SaveChangesAsync() > 0;
         }
     }
 }

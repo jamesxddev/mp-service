@@ -9,6 +9,6 @@ namespace MPService.Application.Users
     {
         Task<Result<UserDto>> RegisterAsync(RegisterRequest request);
         Task<AuthResultDto> LoginAsync(LoginRequest request);
-
+        Task<Result<string>> UpdatePasswordAsync(string username, UpdatePasswordRequest request);
     }
 }

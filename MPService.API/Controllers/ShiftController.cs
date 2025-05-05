@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MPService.Application.Shifts;
 using MPService.Application.Shifts.DTOs;
 
 namespace MPService.API.Controllers
 {
+    [Authorize]
     [Route("api/shift")]
     [ApiController]
     public class ShiftController : ControllerBase

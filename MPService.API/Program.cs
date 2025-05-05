@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using MPService.API.Models;
 using MPService.Application.Auth;
 using MPService.Application.Shifts;
 using MPService.Application.Users;
@@ -8,8 +10,8 @@ using MPService.Infrastructure.Persistence;
 using MPService.Infrastructure.Persistence.Shifts;
 using MPService.Infrastructure.Persistence.Users;
 using Scalar.AspNetCore;
-using System;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +51,32 @@ builder.WebHost.UseUrls(
     "http://0.0.0.0:8081",
     "http://0.0.0.0:8082");
 
+// Bind config to class
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
+var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+
+if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.Key) || string.IsNullOrWhiteSpace(jwtSettings.Issuer))
+{
+    throw new InvalidOperationException("JWT configuration is missing or incomplete in appsettings.json.");
+}
+
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings!.Issuer,
+            ValidAudience = jwtSettings!.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtSettings!.Key))
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -74,6 +102,7 @@ app.MapGet("/info", () =>
 app.UseHttpsRedirection();
 app.UseCors("AllowLocalhost");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

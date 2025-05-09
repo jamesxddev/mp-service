@@ -23,7 +23,9 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(
                 "http://localhost:8081",
                 "http://192.168.100.27:5000",
-                "http://192.168.100.27:8082")
+                "http://192.168.100.27:8082",
+                "http://192.168.1.100:5000",
+                "http://192.168.1.100:8082")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();

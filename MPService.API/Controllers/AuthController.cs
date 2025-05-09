@@ -30,7 +30,6 @@ namespace MPService.API.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {

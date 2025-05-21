@@ -23,9 +23,9 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(
                 "http://localhost:8081",
                 "http://192.168.100.27:5000",
-                "http://192.168.100.27:8082",
+                "http://192.168.100.27:3001",
                 "http://192.168.1.100:5000",
-                "http://192.168.1.100:8082")
+                "http://192.168.1.100:3001")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
@@ -51,7 +51,9 @@ builder.Services.AddScoped<IShiftAppService, ShiftAppService>();
 builder.WebHost.UseUrls(
     "http://0.0.0.0:5000",
     "http://0.0.0.0:8081",
-    "http://0.0.0.0:8082");
+    "http://0.0.0.0:8082",
+    "http://0.0.0.0:443",
+    "http://0.0.0.0:3001");
 
 // Bind config to class
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));

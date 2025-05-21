@@ -9,6 +9,7 @@ using MPService.Domain.Users;
 using MPService.Infrastructure.Persistence;
 using MPService.Infrastructure.Persistence.Shifts;
 using MPService.Infrastructure.Persistence.Users;
+using MPService.Infrastructure.Services;
 using Scalar.AspNetCore;
 using System.Reflection;
 using System.Text;
@@ -81,6 +82,8 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddHostedService<CloudflaredTunnelService>();
 
 var app = builder.Build();
 

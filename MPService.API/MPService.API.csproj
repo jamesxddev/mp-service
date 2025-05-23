@@ -21,4 +21,11 @@
     <ProjectReference Include="..\MPService.Infrastructure\MPService.Infrastructure.csproj" />
   </ItemGroup>
 
+    <ItemGroup>
+	    <None Update="Tools\cloudflared.exe">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	</None>
+    </ItemGroup>
+
 </Project>

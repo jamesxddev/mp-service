@@ -96,10 +96,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+var env = app.Environment.EnvironmentName;
+
 app.MapGet("/info", () =>
 {
     var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
-    return $"MP Service App Version: {version}";
+    return $"MP Service App Version: {version} - {app.Environment.EnvironmentName.ToUpper()}";
 
 });
 

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using MPService.API.Models;
 using MPService.Application.Auth;
@@ -25,7 +26,8 @@ builder.Services.AddCors(options =>
                 "http://192.168.100.27:5000",
                 "http://192.168.100.27:3001",
                 "http://192.168.1.100:5000",
-                "http://192.168.1.100:3001")
+                "http://192.168.1.100:3001",
+                "http://localhost:5173")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
@@ -98,10 +100,30 @@ if (app.Environment.IsDevelopment())
 
 var env = app.Environment.EnvironmentName;
 
-app.MapGet("/info", () =>
+app.MapGet("/info", async context  =>
 {
+    //var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
+    //return $"MP Service App Version: {version} - {app.Environment.EnvironmentName.ToUpper()}";
+
     var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
-    return $"MP Service App Version: {version} - {app.Environment.EnvironmentName.ToUpper()}";
+    var environment = app.Environment.EnvironmentName.ToUpper();
+
+    var htmlPath = Path.Combine(Directory.GetCurrentDirectory(), "Pages", "info.html");
+
+    if (!File.Exists(htmlPath))
+    {
+        context.Response.StatusCode = 500;
+        await context.Response.WriteAsync("Status page not found.");
+        return;
+    }
+
+    var htmlTemplate = await File.ReadAllTextAsync(htmlPath);
+    var renderedHtml = htmlTemplate
+        .Replace("{{VERSION}}", version)
+        .Replace("{{ENV}}", environment);
+
+    context.Response.ContentType = "text/html";
+    await context.Response.WriteAsync(renderedHtml);
 
 });
 
@@ -111,6 +133,12 @@ app.UseCors("AllowLocalhost");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Assets")),
+    RequestPath = "/assets"
+});
 app.MapControllers();
 
 using (var scope = app.Services.CreateScope())

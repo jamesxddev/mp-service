@@ -20,6 +20,14 @@
   <ItemGroup>
     <ProjectReference Include="..\MPService.Application\MPService.Application.csproj" />
     <ProjectReference Include="..\MPService.Infrastructure\MPService.Infrastructure.csproj" />
+	<Content Include="Pages\info.html">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	</Content>
+	<Content Include="Assets\**\*.*">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	</Content>
   </ItemGroup>
 
 </Project>

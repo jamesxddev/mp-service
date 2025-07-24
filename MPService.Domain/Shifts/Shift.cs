@@ -12,6 +12,7 @@ namespace MPService.Domain.Shifts
         public DateTime TimeOut { get; set; }
         public bool IsPaid { get; set; }
         public DateTime PaidDate { get; set; }
+        public Guid PayrollTransactionId { get; set; }
 
         public void CreateNewShift(Guid userId, DateTime timeIn) 
         {

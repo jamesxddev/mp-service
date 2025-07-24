@@ -45,6 +45,22 @@ namespace MPService.Infrastructure.Persistence.Shifts
             return shifts;
         }
 
+        public async Task<IEnumerable<Shift>> GetShiftByUsernameAndDateRangeAsync(string username, bool isPaid, DateTime startDate, DateTime endDate)
+        {
+            var shifts = await _dbContext.Shift
+                .AsNoTracking()
+                .Where(x =>
+                    x.User != null &&
+                    x.User.Username == username &&
+                    x.IsPaid == isPaid &&
+                    x.TimeIn >= startDate &&
+                    x.TimeIn < endDate.AddDays(1)) // exclusive upper bound
+                .OrderByDescending(x => x.TimeIn)
+                .ToListAsync();
+
+            return shifts;
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return await _dbContext.SaveChangesAsync() > 0;

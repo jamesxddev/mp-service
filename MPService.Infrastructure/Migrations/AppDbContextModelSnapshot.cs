@@ -22,6 +22,34 @@ namespace MPService.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MPService.Domain.Payrolls.PayrollTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("PayrollDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TotalDays")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPay")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PayrollTransactions", (string)null);
+                });
+
             modelBuilder.Entity("MPService.Domain.Shifts.Shift", b =>
                 {
                     b.Property<Guid>("Id")
@@ -33,6 +61,9 @@ namespace MPService.Infrastructure.Migrations
 
                     b.Property<DateTime>("PaidDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PayrollTransactionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("TimeIn")
                         .HasColumnType("datetime2");
@@ -119,6 +150,17 @@ namespace MPService.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MPService.Domain.Payrolls.PayrollTransaction", b =>
+                {
+                    b.HasOne("MPService.Domain.Users.User", "User")
+                        .WithMany("PayrollTransactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("MPService.Domain.Shifts.Shift", b =>
                 {
                     b.HasOne("MPService.Domain.Users.User", "User")
@@ -132,6 +174,8 @@ namespace MPService.Infrastructure.Migrations
 
             modelBuilder.Entity("MPService.Domain.Users.User", b =>
                 {
+                    b.Navigation("PayrollTransactions");
+
                     b.Navigation("Shift");
                 });
 #pragma warning restore 612, 618

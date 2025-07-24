@@ -1,4 +1,5 @@
 ﻿using MPService.Common.Entities;
+using MPService.Domain.Payrolls;
 using MPService.Domain.Shifts;
 using System.ComponentModel.DataAnnotations;
 
@@ -45,6 +46,7 @@ namespace MPService.Domain.Users
 
 
         public ICollection<Shift> Shift { get; set; } = [];
+        public ICollection<PayrollTransaction> PayrollTransactions { get; set; } = [];
     }
 
 }

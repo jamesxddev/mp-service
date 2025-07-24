@@ -6,6 +6,7 @@
         Task<bool> AddShiftAsync(Shift shift);
         Task<bool> UpdateShiftAsync(Shift shift);
         Task<IEnumerable<Shift>> GetShiftByUsernameAsync(string username);
+        Task<IEnumerable<Shift>> GetShiftByUsernameAndDateRangeAsync(string username, bool isPaid, DateTime startDate, DateTime endDate);
 
 
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MPService.Domain.Payrolls;
 using MPService.Domain.Shifts;
 using MPService.Domain.Users;
 
@@ -22,6 +23,14 @@ namespace MPService.Infrastructure.Persistence
 
                 entity.HasIndex(i => i.Email)
                 .IsUnique();
+
+                entity.HasMany(s => s.Shift)
+                .WithOne(a => a.User)
+                .HasForeignKey(x => x.UserId);
+
+                entity.HasMany(e => e.PayrollTransactions)
+                .WithOne(a => a.User)
+                .HasForeignKey(x => x.UserId);
             });
 
             modelBuilder.Entity<Shift>(entity =>
@@ -30,6 +39,32 @@ namespace MPService.Infrastructure.Persistence
 
                 entity.HasOne(a => a.User)
                 .WithMany(s => s.Shift)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            });
+
+            modelBuilder.Entity<PayrollTransaction>(entity => 
+            {
+                entity.ToTable("PayrollTransactions");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.PayrollDate)
+                .IsRequired();
+
+                entity.Property(e => e.TotalDays)
+                .IsRequired();
+
+                entity.Property(e => e.TotalPay)
+                .HasColumnType("decimal(18,2)")
+                .IsRequired();
+
+                entity.Property(e => e.DateCreated)
+                .IsRequired();
+
+                entity.HasOne(a => a.User)
+                .WithMany(s => s.PayrollTransactions)
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.NoAction);
 

@@ -3,8 +3,10 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using MPService.API.Models;
 using MPService.Application.Auth;
+using MPService.Application.Payrolls.Queries;
 using MPService.Application.Shifts;
 using MPService.Application.Users;
+using MPService.Common.Middleware;
 using MPService.Domain.Shifts;
 using MPService.Domain.Users;
 using MPService.Infrastructure.Persistence;
@@ -49,6 +51,8 @@ builder.Services.AddScoped<IUserAppService, UserAppService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IShiftRepository, ShiftRepository>();
 builder.Services.AddScoped<IShiftAppService, ShiftAppService>();
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetPayrollTransactionsQuery).Assembly));
 
 builder.WebHost.UseUrls(
     "http://0.0.0.0:5000",
@@ -96,15 +100,18 @@ if (app.Environment.IsDevelopment())
         context.Response.Redirect("/scalar/v1");
         return Task.CompletedTask;
     });
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.EnsureCreated(); // creates DB if it doesn't exist
+    }
 }
 
 var env = app.Environment.EnvironmentName;
 
 app.MapGet("/info", async context  =>
 {
-    //var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
-    //return $"MP Service App Version: {version} - {app.Environment.EnvironmentName.ToUpper()}";
-
     var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "Unknown";
     var environment = app.Environment.EnvironmentName.ToUpper();
 
@@ -127,6 +134,8 @@ app.MapGet("/info", async context  =>
 
 });
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseCors("AllowLocalhost");
 
@@ -140,11 +149,5 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/assets"
 });
 app.MapControllers();
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated(); // creates DB if it doesn't exist
-}
 
 app.Run();
